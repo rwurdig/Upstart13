@@ -11,6 +11,3 @@ data/output/
 spark-warehouse/
 metastore_db/
 derby.log
-
-# Claude Code local config
-.claude/

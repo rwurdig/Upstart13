@@ -9,10 +9,10 @@ the two analysis questions below.
 ## Architecture
 
 ```text
-CSV files                 raw layer              store layer                publish layer
+CSV files              raw layer                store layer                publish layer
 data/input/*.csv  ──►  raw_products        ──►  store_products        ──►  publish_product
-                        raw_sales_order_*  ──►  store_sales_order_*   ──►  publish_orders ──► analysis (Q1, Q2)
-                        (as-delivered,          (typed, NULL-normalised,    (business rules,
+                       raw_sales_order_*   ──►  store_sales_order_*   ──►  publish_orders ──► analysis (Q1, Q2)
+                       (as-delivered,           (typed, NULL-normalised,   (business rules,
                          all strings)            keys validated,             derived columns)
                                                  quality report)
 ```
@@ -78,7 +78,7 @@ documented convention. `(Uncategorized)` covers products whose subcategory
 falls outside the case-study mapping (Brakes, Chains, Caps, …); the five
 month-precision orders have NULL lead time and are excluded by `AVG`.
 
-## Data quality findings (the interesting bits)
+## Data quality findings
 
 The dataset contains three deliberate-looking traps, all detected, handled
 and reported in `data/output/quality_report.md`:
@@ -139,9 +139,7 @@ trade-offs).
 
 ## Testing
 
-`python -m pytest tests/ -q` → **22 passed**. Coverage focuses on the risky
-logic: 13 parametrised business-day cases plus the 7-calendar-day rule across
-every starting weekday and a Spark↔Python parity sweep; category-mapping
-rules including the `Frames` substring and the `Bib-Shorts ≠ Shorts` exact-match
-edge; deduplication determinism; the publish_orders column contract, grain,
-rename, and derived-column values (including the month-precision NULL case).
+`python -m pytest tests/ -q` → **22 passed**. 
+Coverage focuses on the risky logic: 13 parametrised business-day cases plus the 7-calendar-day rule across every starting weekday and a Spark↔Python parity sweep; 
+Category-mapping rules including the `Frames` substring and the `Bib-Shorts ≠ Shorts` exact-match edge; 
+Deduplication determinism: the publish_orders column contract, grain, rename, and derived-column values (including the month-precision NULL case).
